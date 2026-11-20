@@ -39,7 +39,7 @@
     <section class="hero">
       <div class="eyebrow">Simple • pratique • gratuit</div>
       <h1>Les bons outils.<br>Moins de prise de tête.</h1>
-      <p>Quatre petits outils pour calculer tes bénéfices, organiser ton budget et trouver de nouvelles idées. Tout fonctionne directement dans ton navigateur.</p>
+      <p>Douze outils gratuits pour calculer, écrire, organiser tes projets et gagner du temps. Tout fonctionne directement dans ton navigateur.</p>
     </section>
 
     <section class="grid" aria-label="Outils gratuits">
@@ -85,11 +85,79 @@
         <button onclick="names()">Générer des noms</button>
         <div class="result" id="nameResult" aria-live="polite">Tes propositions apparaîtront ici.</div>
       </article>
+
+      <article class="card">
+        <div class="ico">％</div><h2>Calculateur de pourcentage</h2>
+        <p>Calcule une part d'un nombre.</p>
+        <label for="pctBase">Nombre de départ</label><input id="pctBase" type="number" value="200">
+        <label for="pctRate">Pourcentage (%)</label><input id="pctRate" type="number" value="15">
+        <button onclick="percentageCalc()">Calculer</button>
+        <div class="result" id="pctResult" aria-live="polite">15 % de 200 = 30</div>
+      </article>
+
+      <article class="card">
+        <div class="ico">🏷️</div><h2>Calculateur de réduction</h2>
+        <p>Découvre le prix après une remise.</p>
+        <label for="discountPrice">Prix initial (€)</label><input id="discountPrice" type="number" min="0" value="50">
+        <label for="discountRate">Réduction (%)</label><input id="discountRate" type="number" min="0" max="100" value="20">
+        <button onclick="discountCalc()">Calculer le prix</button>
+        <div class="result" id="discountResult" aria-live="polite">Prix final : 40,00 €</div>
+      </article>
+
+      <article class="card">
+        <div class="ico">⏱️</div><h2>Convertisseur de temps</h2>
+        <p>Convertis des heures en minutes et en secondes.</p>
+        <label for="hoursInput">Nombre d'heures</label><input id="hoursInput" type="number" min="0" step="0.01" value="2">
+        <button onclick="timeCalc()">Convertir</button>
+        <div class="result" id="timeResult" aria-live="polite">2 h = 120 min = 7 200 s</div>
+      </article>
+
+      <article class="card">
+        <div class="ico">📝</div><h2>Compteur de texte</h2>
+        <p>Compte les mots et les caractères de ton texte.</p>
+        <label for="textInput">Ton texte</label><textarea id="textInput" rows="4" placeholder="Écris ou colle ton texte ici..." oninput="textCount()" style="width:100%;border:1px solid #344761;background:#0b1525;color:var(--text);padding:12px;border-radius:10px;font:inherit"></textarea>
+        <div class="result" id="textResult" aria-live="polite">0 mot · 0 caractère</div>
+      </article>
+
+      <article class="card">
+        <div class="ico">🎯</div><h2>Objectif d'épargne</h2>
+        <p>Estime le temps nécessaire pour atteindre un objectif.</p>
+        <label for="goalAmount">Objectif (€)</label><input id="goalAmount" type="number" min="0" value="150">
+        <label for="monthlySave">Somme mise de côté par mois (€)</label><input id="monthlySave" type="number" min="0" value="25">
+        <button onclick="goalCalc()">Estimer</button>
+        <div class="result" id="goalResult" aria-live="polite">Il te faudra environ 6 mois.</div>
+      </article>
+
+      <article class="card">
+        <div class="ico">📚</div><h2>Planning de révision</h2>
+        <p>Répartis ton temps entre plusieurs matières.</p>
+        <label for="subjects">Matières (séparées par des virgules)</label><input id="subjects" placeholder="Maths, Français, Histoire">
+        <label for="studyMinutes">Temps total (minutes)</label><input id="studyMinutes" type="number" min="1" value="90">
+        <button onclick="studyPlan()">Créer mon planning</button>
+        <div class="result" id="studyResult" aria-live="polite">Ton planning apparaîtra ici.</div>
+      </article>
+
+      <article class="card">
+        <div class="ico">🎲</div><h2>Choix au hasard</h2>
+        <p>Laisse SmartTools choisir parmi tes options.</p>
+        <label for="choices">Options (séparées par des virgules)</label><input id="choices" placeholder="Pizza, Pâtes, Salade">
+        <button onclick="randomChoice()">Choisir pour moi</button>
+        <div class="result" id="choiceResult" aria-live="polite">Le résultat apparaîtra ici.</div>
+      </article>
+
+      <article class="card">
+        <div class="ico">🔤</div><h2>Convertisseur de casse</h2>
+        <p>Transforme ton texte en minuscules ou majuscules.</p>
+        <label for="caseInput">Ton texte</label><textarea id="caseInput" rows="3" placeholder="Écris ton texte ici..." style="width:100%;border:1px solid #344761;background:#0b1525;color:var(--text);padding:12px;border-radius:10px;font:inherit"></textarea>
+        <button onclick="convertCase('upper')">MAJUSCULES</button>
+        <button onclick="convertCase('lower')">minuscules</button>
+        <div class="result" id="caseResult" aria-live="polite">Le texte transformé apparaîtra ici.</div>
+      </article>
     </section>
 
     <div class="note">Astuce : ces outils font les calculs sur ton appareil. Aucune donnée n'est envoyée à un serveur.</div>
   </main>
-  <footer class="footer">SmartTools — Projet indépendant. Les résultats sont indicatifs et ne constituent pas des conseils financiers.</footer>
+  <footer class="footer">SmartTools — 12 outils gratuits. Projet indépendant. Les résultats sont indicatifs et ne constituent pas des conseils financiers.</footer>
 </div>
 <script>
 const euro = n => new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format(n);
@@ -120,6 +188,50 @@ function names(){
   while(picks.length<3){const v=prefixes[Math.floor(Math.random()*prefixes.length)]+clean+suffixes[Math.floor(Math.random()*suffixes.length)];if(!picks.includes(v))picks.push(v);}
   document.getElementById('nameResult').innerHTML=picks.map(x=>'• '+x).join('<br>');
 }
+
+function percentageCalc(){
+  const b=num('pctBase'),p=num('pctRate'),el=document.getElementById('pctResult');
+  if(!Number.isFinite(b)||!Number.isFinite(p)){el.textContent='Entre deux nombres valides.';return;}
+  el.textContent=p+' % de '+b+' = '+(b*p/100).toLocaleString('fr-FR',{maximumFractionDigits:2});
+}
+function discountCalc(){
+  const p=num('discountPrice'),d=num('discountRate'),el=document.getElementById('discountResult');
+  if(!Number.isFinite(p)||!Number.isFinite(d)||p<0||d<0||d>100){el.textContent='Vérifie le prix et la réduction (0 à 100 %).';return;}
+  el.textContent='Prix final : '+euro(p*(1-d/100))+' · Économie : '+euro(p*d/100);
+}
+function timeCalc(){
+  const h=num('hoursInput'),el=document.getElementById('timeResult');
+  if(!Number.isFinite(h)||h<0){el.textContent='Entre un nombre positif.';return;}
+  el.textContent=h+' h = '+(h*60).toLocaleString('fr-FR')+' min = '+(h*3600).toLocaleString('fr-FR')+' s';
+}
+function textCount(){
+  const t=document.getElementById('textInput').value;
+  const words=t.trim()?t.trim().split(/\s+/).length:0;
+  document.getElementById('textResult').textContent=words+' mot(s) · '+t.length+' caractère(s)';
+}
+function goalCalc(){
+  const g=num('goalAmount'),m=num('monthlySave'),el=document.getElementById('goalResult');
+  if(!Number.isFinite(g)||!Number.isFinite(m)||g<0||m<=0){el.textContent='Entre un objectif positif et une épargne mensuelle supérieure à 0.';return;}
+  const months=Math.ceil(g/m);
+  el.textContent='Environ '+months+' mois ('+euro(months*m)+' mis de côté au total).';
+}
+function studyPlan(){
+  const s=document.getElementById('subjects').value.split(',').map(x=>x.trim()).filter(Boolean);
+  const m=num('studyMinutes'),el=document.getElementById('studyResult');
+  if(!s.length||!Number.isFinite(m)||m<1){el.textContent='Ajoute au moins une matière et un temps valide.';return;}
+  const base=Math.floor(m/s.length),rest=m%s.length;
+  el.textContent=s.map((x,i)=>x+' : '+(base+(i<rest?1:0))+' min').join(' · ');
+}
+function randomChoice(){
+  const a=document.getElementById('choices').value.split(',').map(x=>x.trim()).filter(Boolean);
+  document.getElementById('choiceResult').textContent=a.length?a[Math.floor(Math.random()*a.length)]:'Ajoute plusieurs options séparées par des virgules.';
+}
+function convertCase(mode){
+  const t=document.getElementById('caseInput').value;
+  const out=mode==='upper'?t.toLocaleUpperCase('fr-FR'):t.toLocaleLowerCase('fr-FR');
+  document.getElementById('caseResult').textContent=out||'Écris un texte à transformer.';
+}
+
 </script>
 </body>
 </html>
